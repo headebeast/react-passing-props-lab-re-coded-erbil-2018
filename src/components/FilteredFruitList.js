@@ -1,29 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class FilteredFruitList extends Component {
-  constructor(props) {
-    super(props);
+const Filter = ({ filters, handleChange }) => 
+  <select onChange={handleChange} defaultValue='all'>
+    <option value='all'>All</option>
+    {filters.map(filter =>
+      <option key={filter} value={filter}>{filter}</option>
+    )}
+  </select>;
 
-    this.state = {
-      items: []
-    };
-  }
+Filter.defaultProps = {
+  filters: [],
+  handleChange: function() {}
+};
 
-  componentDidMount() {
-    fetch('/api/fruit')
-      .then(response => response.json())
-      .then(items => this.setState({ items }));
-  }
-
-  render() {
-    const list = !this.props.filter || this.props.filter === 'all' ? this.state.items : this.state.items.filter(i => i.fruit_type === this.props.filter);
-
-    return (
-      <ul className="fruit-list">
-        {list.map((item, index) => <li key={index}>{item.char}</li>)}
-      </ul>
-    );
-  }
-}
-
-export default FilteredFruitList;
+export default Filter;
